@@ -1,0 +1,16 @@
+{
+    "name": "drupal/migrate_inline_image",
+    "type": "drupal-module",
+    "description": "Migrate inline images for the rich-text field.",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/migrate_inline_image",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/migrate_inline_image",
+        "source": "http://cgit.drupalcode.org/migrate_inline_image"
+    },
+    "require": {
+        "drupal/migrate_file": "^1.1"
+    }
+}

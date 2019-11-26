@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains migrate_inline_image.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function migrate_inline_image_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the migrate_inline_image module.
+    case 'help.page.migrate_inline_image':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Migrate inline images for the rich-text field.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
