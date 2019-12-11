@@ -20,7 +20,6 @@ use Symfony\Component\DomCrawler\Image;
 class SaveInlineImage extends ProcessPluginBase {
 
   private $batId;
-  private $savePath;
 
   public function __construct(array $configuration, $plugin_id, $plugin_definition)
   {
@@ -35,15 +34,13 @@ class SaveInlineImage extends ProcessPluginBase {
     }
 
     $this->batId = \Drupal::service('uuid')->generate();
-    $this->savePath = $this->configuration['image_file_save_destination'].'-'.$this->batId;
-
-    $this->createPath($this->savePath);
   }
 
   /**
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+
 
     // 从html中分析img标签
     $baseUri = 'http://localhost';
@@ -55,7 +52,10 @@ class SaveInlineImage extends ProcessPluginBase {
     foreach ($imgs as $img) {
       $image_url = str_replace($baseUri, '', $img->getUri());
       $node = $img->getNode();
-      $file = $this->saveImage($this->configuration['image_file_source_path'] . '/' . $image_url);
+
+      $file = $this->saveImage(
+        $row->get($this->configuration['image_file_source_path']) . $image_url,
+        $row->get($this->configuration['image_file_save_destination']));
       $node->setAttribute('src', $file->createFileUrl());
       $node->setAttribute('data-entity-type', 'file');
       $node->setAttribute('data-entity-uuid', $file->uuid());
@@ -66,12 +66,16 @@ class SaveInlineImage extends ProcessPluginBase {
 
   /**
    * @param $source_path
+   * @param $save_path
    * @return File
+   * @throws MigrateException
    */
-  private function saveImage($source_path) {
+  private function saveImage($source_path, $save_path) {
+    $save_path = $save_path.'bat-'.$this->batId;
+    $this->createPath($save_path);
 
     $info = pathinfo($source_path);
-    $file = file_save_data(file_get_contents($source_path),$this->savePath.'/'.$info['basename']);
+    $file = file_save_data(file_get_contents($source_path),$save_path.'/'.$info['basename']);
 
     if ($file === false) throw new MigrateException('Fail on saving file ' . $source_path);
 
