@@ -11,6 +11,6 @@
         "source": "http://cgit.drupalcode.org/migrate_inline_image"
     },
     "require": {
-        "drupal/migrate_file": "^1.1"
+        "drupal/migrate_file": "^2.0"
     }
 }

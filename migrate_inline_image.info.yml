@@ -1,7 +1,7 @@
 name: 'Migrate Inline Image'
 type: module
 description: 'Migrate inline images for the rich-text field.'
-core: 8.x
+core_version_requirement: ^8.8 || ^9
 package: 'Migrate'
 dependencies:
   - migrate_file:migrate_file
