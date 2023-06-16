@@ -3,6 +3,7 @@
 namespace Drupal\migrate_inline_image\Plugin\migrate\process;
 
 use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\file\Entity\File;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\file\FileRepositoryInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\DomCrawler\Crawler;
  *  id = "save_inline_image"
  * )
  */
-class SaveInlineImage extends ProcessPluginBase {
+class SaveInlineImage extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
   /**
    * The unique bat id.
@@ -65,33 +66,22 @@ class SaveInlineImage extends ProcessPluginBase {
       throw new MigrateException('"image_file_save_destination" must be configured.');
     }
 
-    $this->batId = $this->uuidService->generate();
     $this->uuidService = $uuid_service;
     $this->fileRepository = $file_repository;
+
+    $this->batId = $this->uuidService->generate();
   }
 
   /**
-   * Creates an instance of the plugin.
-   *
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *   The container to pull out services used in the plugin.
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   *
-   * @return static
-   *   Returns an instance of this plugin.
+   * {@inheritdoc}
    *
    * @throws \Drupal\migrate\MigrateException
    */
   public static function create(
     ContainerInterface $container,
     array $configuration,
-    string $plugin_id,
-    mixed $plugin_definition
+    $plugin_id,
+    $plugin_definition
   ): static {
     return new static(
       $configuration,
