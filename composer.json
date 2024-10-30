@@ -11,7 +11,7 @@
         "source": "http://cgit.drupalcode.org/migrate_inline_image"
     },
     "require": {
-        "drupal/migrate_file": "^2.0",
+        "drupal/migrate_file": "project-update-bot-only-dev",
         "symfony/dom-crawler": "^6.0"
     }
 }
